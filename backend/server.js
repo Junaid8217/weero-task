@@ -11,8 +11,18 @@ const app = express();
 connectDB();
 
 // Middleware
+const allowedOrigins = [
+  'https://melodic-shortbread-324da4.netlify.app',
+  'http://localhost:5173',
+  ...(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : []),
+];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'https://melodic-shortbread-324da4.netlify.app',
+  origin: (origin, callback) => {
+    // allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS blocked: ${origin}`));
+  },
   credentials: true,
 }));
 app.use(express.json());

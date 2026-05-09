@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    toast.success('Logged out');
+    toast.success('Logged out successfully');
     navigate('/');
   };
 
@@ -18,31 +18,31 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container navbar-inner">
         <Link to="/" className="navbar-logo">
-          <span className="logo-icon">⬡</span>
-          <span className="logo-text">Weero<span className="logo-accent">.</span></span>
+          <div className="logo-mark">⬡</div>
+          <span className="logo-text">Weero<span className="logo-dot">.</span></span>
         </Link>
 
         <div className="navbar-actions">
           {isAuthenticated ? (
             <>
-              <div className="user-info">
-                <span className="user-avatar">{user.name.charAt(0).toUpperCase()}</span>
+              <div className="user-pill">
+                <div className="user-avatar">{user.name.charAt(0).toUpperCase()}</div>
                 <span className="user-name">{user.name}</span>
               </div>
               <button onClick={handleLogout} className="btn btn-outline btn-sm">
-                Logout
+                Sign out
               </button>
             </>
           ) : (
             <>
               <Link
                 to="/login"
-                className={`btn btn-outline btn-sm ${location.pathname === '/login' ? 'active' : ''}`}
+                className={`btn btn-ghost btn-sm ${location.pathname === '/login' ? 'active' : ''}`}
               >
-                Login
+                Sign in
               </Link>
               <Link to="/register" className="btn btn-primary btn-sm">
-                Register
+                Get started
               </Link>
             </>
           )}

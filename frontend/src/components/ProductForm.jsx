@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import './ProductForm.css';
 
 const CATEGORIES = ['General', 'Electronics', 'Clothing', 'Books', 'Food & Drink', 'Home & Garden', 'Sports', 'Other'];
-
 const emptyForm = { name: '', price: '', description: '', imageUrl: '', category: 'General' };
 
 const ProductForm = ({ product, onSubmit, onClose, loading }) => {
@@ -10,17 +9,13 @@ const ProductForm = ({ product, onSubmit, onClose, loading }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (product) {
-      setForm({
-        name: product.name || '',
-        price: product.price || '',
-        description: product.description || '',
-        imageUrl: product.imageUrl || '',
-        category: product.category || 'General',
-      });
-    } else {
-      setForm(emptyForm);
-    }
+    setForm(product ? {
+      name: product.name || '',
+      price: product.price || '',
+      description: product.description || '',
+      imageUrl: product.imageUrl || '',
+      category: product.category || 'General',
+    } : emptyForm);
     setErrors({});
   }, [product]);
 
@@ -35,8 +30,8 @@ const ProductForm = ({ product, onSubmit, onClose, loading }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+    setForm(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const handleSubmit = async (e) => {
@@ -49,26 +44,44 @@ const ProductForm = ({ product, onSubmit, onClose, loading }) => {
   const isEdit = !!product;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal">
         <div className="modal-header">
-          <h2 className="modal-title">{isEdit ? 'Edit Product' : 'Add New Product'}</h2>
-          <button className="btn btn-outline btn-icon" onClick={onClose} aria-label="Close">✕</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: 36, height: 36,
+              background: 'var(--accent-subtle)',
+              border: '1px solid var(--border-accent)',
+              borderRadius: 'var(--radius-sm)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '1rem'
+            }}>
+              {isEdit ? '✎' : '＋'}
+            </div>
+            <h2 className="modal-title">{isEdit ? 'Edit Product' : 'New Product'}</h2>
+          </div>
+          <button className="btn btn-ghost btn-icon" onClick={onClose} aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="modal-body">
             <div className="form-grid">
+
               <div className="form-group">
                 <label className="form-label">Product Name *</label>
                 <input
                   type="text"
                   name="name"
                   className={`form-input ${errors.name ? 'is-error' : ''}`}
-                  placeholder="e.g. Wireless Headphones"
+                  placeholder="e.g. Wireless Headphones Pro"
                   value={form.name}
                   onChange={handleChange}
                   maxLength={100}
+                  autoFocus
                 />
                 {errors.name && <span className="form-error">⚠ {errors.name}</span>}
               </div>
@@ -91,15 +104,8 @@ const ProductForm = ({ product, onSubmit, onClose, loading }) => {
 
                 <div className="form-group">
                   <label className="form-label">Category</label>
-                  <select
-                    name="category"
-                    className="form-select"
-                    value={form.category}
-                    onChange={handleChange}
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
+                  <select name="category" className="form-select" value={form.category} onChange={handleChange}>
+                    {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
               </div>
@@ -117,11 +123,7 @@ const ProductForm = ({ product, onSubmit, onClose, loading }) => {
                 {errors.imageUrl && <span className="form-error">⚠ {errors.imageUrl}</span>}
                 {form.imageUrl && !errors.imageUrl && (
                   <div className="image-preview">
-                    <img
-                      src={form.imageUrl}
-                      alt="Preview"
-                      onError={(e) => e.target.style.display = 'none'}
-                    />
+                    <img src={form.imageUrl} alt="Preview" onError={e => e.target.style.display = 'none'} />
                   </div>
                 )}
               </div>
@@ -131,28 +133,26 @@ const ProductForm = ({ product, onSubmit, onClose, loading }) => {
                 <textarea
                   name="description"
                   className={`form-textarea ${errors.description ? 'is-error' : ''}`}
-                  placeholder="Describe your product in detail..."
+                  placeholder="Describe your product in detail…"
                   value={form.description}
                   onChange={handleChange}
                   maxLength={1000}
                   rows={4}
                 />
-                <div className="char-count">{form.description.length}/1000</div>
+                <div className="char-count">{form.description.length} / 1000</div>
                 {errors.description && <span className="form-error">⚠ {errors.description}</span>}
               </div>
+
             </div>
           </div>
 
           <div className="modal-footer">
-            <button type="button" className="btn btn-outline" onClick={onClose}>
-              Cancel
-            </button>
+            <button type="button" className="btn btn-outline" onClick={onClose}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? (
-                <><span className="spinner" style={{width:16,height:16}} /> Saving…</>
-              ) : (
-                isEdit ? 'Save Changes' : 'Create Product'
-              )}
+              {loading
+                ? <><span className="spinner" style={{ width: 15, height: 15 }} /> Saving…</>
+                : isEdit ? 'Save Changes' : 'Create Product'
+              }
             </button>
           </div>
         </form>
