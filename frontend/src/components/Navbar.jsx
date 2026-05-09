@@ -25,9 +25,6 @@ const Navbar = () => {
         <div className="navbar-actions">
           {isAuthenticated ? (
             <>
-              <Link to="/products/new" className="btn btn-primary btn-sm">
-                <span>＋</span> Add Product
-              </Link>
               <div className="user-info">
                 <span className="user-avatar">{user.name.charAt(0).toUpperCase()}</span>
                 <span className="user-name">{user.name}</span>

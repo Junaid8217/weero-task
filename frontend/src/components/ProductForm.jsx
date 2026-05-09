@@ -49,7 +49,7 @@ const ProductForm = ({ product, onSubmit, onClose, loading }) => {
   const isEdit = !!product;
 
   return (
-    <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="modal-overlay">
       <div className="modal">
         <div className="modal-header">
           <h2 className="modal-title">{isEdit ? 'Edit Product' : 'Add New Product'}</h2>
