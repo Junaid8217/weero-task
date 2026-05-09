@@ -2,7 +2,7 @@
 
 A full-stack web application where products can be added, viewed, updated, and deleted. Built as part of the Weero Digital task assessment.
 
-**Live Demo:** 
+**Live Demo:** https://melodic-shortbread-324da4.netlify.app
 
 ---
 
