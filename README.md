@@ -3,7 +3,6 @@
 A production-ready MERN stack application for managing product catalogues. Features JWT authentication, full CRUD operations, real-time search, filtering, sorting, and pagination — deployed on Netlify (frontend) and Render (backend).
 
 **Live Demo:** [https://melodic-shortbread-324da4.netlify.app](https://melodic-shortbread-324da4.netlify.app)  
-**Backend API:** [https://weero-task.onrender.com/api](https://weero-task.onrender.com/api)
 
 ---
 
