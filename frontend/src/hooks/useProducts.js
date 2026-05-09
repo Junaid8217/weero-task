@@ -12,8 +12,8 @@ export const useProducts = () => {
     setError(null);
     try {
       const { data } = await api.get('/products', { params });
-      setProducts(data.data);
-      setPagination(data.pagination);
+      setProducts(data.data ?? []);
+      setPagination(data.pagination ?? { total: 0, page: 1, pages: 1, limit: 9 });
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch products');
     } finally {

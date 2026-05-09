@@ -182,9 +182,9 @@ const Home = () => {
             </select>
           </div>
 
-          {pagination.total > 0 && (
+          {pagination?.total > 0 && (
             <p className="results-count">
-              {pagination.total} product{pagination.total !== 1 ? 's' : ''} found
+              {pagination?.total} product{pagination?.total !== 1 ? 's' : ''} found
             </p>
           )}
         </div>
